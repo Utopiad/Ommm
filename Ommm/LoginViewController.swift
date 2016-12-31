@@ -58,15 +58,14 @@ class LoginViewController: UIViewController {
                                 print(responseString)
                             }
                         case .success(let responseObject):
-                            let user = UserDefaults.standard
-                            user.set(username, forKey:"username")
-                            user.set(password, forKey:  "password")
-                            user.set(JSON(responseObject)["token"].stringValue, forKey: "token")
-                            
+
+							let currentUser = CurrentUser.sharedInstance
+							
+							currentUser.username = username
+							currentUser.password = password
+							currentUser.token = JSON(responseObject)["token"].stringValue                            
                             
                             //Set user logged in
-                            user.set(true, forKey: "isUserLoggedIn")
-                            user.synchronize()
                             
                             self.performSegue(withIdentifier: HomeViewController.segue_identifier, sender: sender)
                         }

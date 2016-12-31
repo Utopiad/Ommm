@@ -11,6 +11,10 @@ target 'Ommm' do
     pod 'SwiftyJSON', '~> 3.1'
     pod 'paper-onboarding', '~> 2.0.1'
 
+	# Pod for Keychain
+	pod 'KeychainSwift', '~> 7.0'
+
+
   target 'OmmmTests' do
     inherit! :search_paths
     # Pods for testing

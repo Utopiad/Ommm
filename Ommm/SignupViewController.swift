@@ -69,13 +69,12 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
                             }
                         case .success(let responseObject):
                             print(responseObject)
-                            let user = UserDefaults.standard
-                            user.set(username, forKey: "username")
-                            user.set(email, forKey: "email")
-                            user.set(password, forKey: "password")
-                            user.synchronize()
-                            CurrentUser.sharedInstance.user = user
-                            self.loginNow(user: user, sender: sender)
+                            let currentUser = CurrentUser.sharedInstance
+							currentUser.username = username
+							currentUser.email = email
+							currentUser.password = password
+							
+                            self.loginNow(username: username, password: password, sender: sender)
                         }
                 }
             }
@@ -84,11 +83,8 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func loginNow(user: UserDefaults, sender: Any)
+	func loginNow(username: String, password: String, sender: Any)
     {
-        let username = user.object(forKey:"username")
-        let password = user.object(forKey:"password")
-        
         let user_data : NSDictionary = NSMutableDictionary()
         user_data.setValue(username, forKey: "username")
         user_data.setValue(password, forKey: "password")
@@ -114,11 +110,9 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
                     print("success")
                     
                     let token = JSON(token)["token"].stringValue
-                    user.set(token, forKey: "token")
+                    CurrentUser.sharedInstance.token = token
                     
                     //Set user logged in
-                    user.set(true, forKey: "isUserLoggedIn")
-                    user.synchronize()
                     self.performSegue(withIdentifier: HomeViewController.segue_identifier, sender: sender)
                 }
         }
