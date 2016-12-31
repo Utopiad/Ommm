@@ -13,8 +13,4 @@ class Exercise {
     var title: String!
     var thumbnail : String!
     
-    
-    init() {
-        
-    }
 }

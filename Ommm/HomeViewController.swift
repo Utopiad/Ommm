@@ -9,7 +9,11 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    
+	
+	let indexRecentExercise		= 1
+	let indexPopularExercise	= 2
+	
+	
     @IBOutlet weak var exercisesTableView: UITableView!
     static let segue_identifier = "home_viewcontroller_identifier"
     
@@ -20,9 +24,9 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        exercisesTableView.reloadData()
-        
+        // link your tablev
+		//exercisesTableView.dataSource = self
+		
         ExerciseService.retrieveRecentsExercises(success: { (recentExercises) in
             self.recentExercises.removeAll()
             self.recentExercises += recentExercises
@@ -30,6 +34,7 @@ class HomeViewController: UIViewController {
             self.exercisesTableView.reloadData()
         }, failure: { (error) in
             print(error)
+			self.showAlert(title: "Erreur", message: error.localizedDescription)
         })
     }
 
@@ -48,39 +53,49 @@ class HomeViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+	
+	// MARK: - Private methods
+	
+	func showAlert(title: String, message: String) {
+		let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+		alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+		self.present(alertController, animated: true, completion: nil)
+	}
 
 }
 
-//extension HomeViewController: UITableViewDataSource {
-//    
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 2
-//    }
-//    
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        switch section {
-//        case 0:
-//            return recentExercises.count
-//        case 1:
-//            return popularExercises.count
-//        default:
-//            return 0
-//        }
-//    }
-//    
-////    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-////        let cell = tableView.dequeueReusableCell(withIdentifier: ExercisesTableViewCell.identifier, for: indexPath) as! ExercisesTableViewCell
-////        
-////        switch indexPath.section {
-////        case 0:
-////            cell.recentExercise = recentExercises[indexPath.row]
-////        case 1:
-////            cell.popularExercise = popularExercises[indexPath.row]
-////        default:
-////            cell = nil
-////        }
-////        /// Note à MOTÉ : J'ai deux groupes de données que je veux injecter dans la mêmte tableView, la data est prête mais je n'arrive pas à faire le lien :(
-////        return cell
-////    }
-//    
-//}
+extension HomeViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return recentExercises.count
+        case 1:
+            return popularExercises.count
+        default:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ExercisesTableViewCell.identifier, for: indexPath) as! ExercisesTableViewCell
+        
+        switch indexPath.section {
+        case 0:
+            cell.exercise = recentExercises[indexPath.row]
+			break
+        case 1:
+            cell.exercise = popularExercises[indexPath.row]
+			break
+        default:
+			break
+        }
+        /// Note à MOTÉ : J'ai deux groupes de données que je veux injecter dans la mêmte tableView, la data est prête mais je n'arrive pas à faire le lien :(
+        return cell
+    }
+    
+}

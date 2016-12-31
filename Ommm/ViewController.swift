@@ -32,7 +32,9 @@ class ViewController: UIViewController, PaperOnboardingDataSource, PaperOnboardi
     
     func onboardingItemAtIndex(_ index: Int) -> OnboardingItemInfo {
         let backgroundColor = UIColor(red: 84/255, green: 0, blue: 255/255, alpha: 1)
-        
+		
+		let font = UIFont(name: "Roboto-Bold", size: 24)
+		
         let titleFont = UIFont(name: "Roboto-Bold", size: 24)!
         let descriptionFont = UIFont(name: "Roboto-Regular", size: 18)!
         

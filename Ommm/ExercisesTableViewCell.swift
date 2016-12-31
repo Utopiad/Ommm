@@ -14,13 +14,19 @@ class ExercisesTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     
-    var recentExercise:RecentExercises! {
+    var exercise:Exercise! {
         didSet {
-            titleLabel.text = recentExercise.title
-            let thumbnail:UIImage = UIImage(named: recentExercise.thumbnail)!
-            let thumbnailView = UIImageView(image: thumbnail)
-            thumbnailView.frame = CGRect(x: 0, y: 0, width: 43, height: 43)
-            self.addSubview(thumbnailView)
+            titleLabel.text = exercise.title
+			
+			// Impossible to load an image with UIImage(named:) when you are using a url
+			// You should use hanakeswift to load image
+			// https://github.com/Haneke/HanekeSwift
+			// imageView.hnk_setImageFromURL(url)
+			
+            //let thumbnail:UIImage = UIImage(named: exercise.thumbnail)!
+            //let thumbnailView = UIImageView(image: thumbnail)
+            //thumbnailView.frame = CGRect(x: 0, y: 0, width: 43, height: 43)
+            //self.addSubview(thumbnailView)
         }
     }
 
