@@ -14,6 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+	// -> It works thanks to the preprocessor macro #if DEBUG
+	// When this value is equal to true it will force the display of the Onboarding View Controller
+	let forceDisplayOnBoardingInDebugMode = true
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -27,6 +30,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if userDefault.bool(forKey: "onboardingComplete") {
             initialViewController = sb.instantiateViewController(withIdentifier: "signUp")
         }
+		
+		#if DEBUG
+			if forceDisplayOnBoardingInDebugMode {
+				initialViewController = sb.instantiateViewController(withIdentifier: "Onboarding")
+			}
+		#endif
         
         window?.rootViewController = initialViewController
         window?.makeKeyAndVisible()
